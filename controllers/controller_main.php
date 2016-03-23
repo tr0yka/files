@@ -72,6 +72,28 @@ class Controller_Main extends Controller{
         }
     }
 
+    public function action_delete(){
+        if(isset($_GET['file']) && !empty($_GET['file']) && is_numeric($_GET['file']) && $_SERVER['REMOTE_ADDR']){
+            $id = $_GET['file'];
+            $file = $this->model->getOneFileInfo($id);
+            $delete = $this->model->deleteFileInfo($id);
+            if($delete!=false){
+                $path = $this->config['folder'].$file['fileName'];
+                if(@unlink($path)){
+                    header('Location: http://'.$_SERVER['HTTP_HOST'].'/');
+                }else{
+                    $this->view->generate('header.php',['title'=>'File uploads']);
+                    $this->view->generate('errors.php',['errors'=>['Ошибка удаления файла']]);
+                    $this->view->generate('footer.php');
+                }
+            }
+        }else{
+            $this->view->generate('header.php',['title'=>'File uploads']);
+            $this->view->generate('errors.php',['errors'=>['Ошибка доступа']]);
+            $this->view->generate('footer.php');
+        }
+    }
+
     public function action_filter(){
         if(isset($_GET['filter'])){
             $this->view->generate('filter.php',['data'=>$this->model->getFilter($_GET['filter'])]);

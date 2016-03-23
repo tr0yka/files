@@ -60,4 +60,21 @@ class Model_main{
         }
     }
 
+    public function deleteFileInfo($id){
+        $query = "SELECT fileName FROM files_info WHERE id={$id}";
+        $res = mysql_query($query);
+        $data = mysql_fetch_array($res);
+        if(count($data)>0){
+            $query = "DELETE FROM files_info WHERE id={$id}";
+            if(mysql_query($query)){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+
+    }
+
 }

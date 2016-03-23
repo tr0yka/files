@@ -8,5 +8,6 @@
     <script src="../../js/app.js"></script>
 </head>
 <body>
+
 <div id="content">
     <div id="header"><a href="/"><?=$title;?></a></div>
