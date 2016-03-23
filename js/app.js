@@ -5,9 +5,6 @@ $(document).ready(function(){
     $('#close').click(function(){
         $('#popup').css({"display":"none"});
     });
-    $("table th").click(function(){
-        console.log($(this).attr('id'));
-    });
     $('#file_list').tablesorter();
     $('#filter input').keydown(function(e){
         if(e.keyCode == 13){

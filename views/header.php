@@ -9,4 +9,4 @@
 </head>
 <body>
 <div id="content">
-    <div id="header"><?=$title;?></div>
+    <div id="header"><a href="/"><?=$title;?></a></div>

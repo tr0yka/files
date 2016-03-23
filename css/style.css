@@ -14,6 +14,11 @@ body{
     background: #2090ff;
     color: #FFF;
 }
+#header a{
+    text-decoration: none;
+    text-underline: none;
+    color: #FFF;
+}
 
 #panel{
     height: 30px;
