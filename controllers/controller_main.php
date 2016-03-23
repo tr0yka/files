@@ -49,7 +49,21 @@ class Controller_Main extends Controller{
     }
 
     public function action_download(){
-
+        if(isset($_GET['file']) && !empty($_GET['file']) && is_numeric($_GET['file'])){
+            $file = $this->model->getOneFileInfo($_GET['file']);
+            if($file!==false){
+                $path = $this->config['folder'].$file['fileName'];
+                $this->downloadFile($path,$file['originalName']);
+            }else{
+                $this->view->generate('header.php',['title'=>'File uploads']);
+                $this->view->generate('errors.php',['errors'=>['Файл не найден']]);
+                $this->view->generate('footer.php');
+            }
+        }else{
+            $this->view->generate('header.php',['title'=>'File uploads']);
+            $this->view->generate('errors.php',['errors'=>['Файл не найден']]);
+            $this->view->generate('footer.php');
+        }
     }
 
     public function action_filter(){
@@ -98,6 +112,39 @@ class Controller_Main extends Controller{
             $name  .= rand(0,9);
         }
         return md5($name);
+    }
+
+    private function downloadFile($filepath,$filename, $mimetype = 'application/octet-stream')
+    {
+        $fsize = filesize($filepath);
+        $ftime = date('D, d M Y H:i:s T', filemtime($filepath));
+        $fd = @fopen($filepath, 'rb');
+        if (isset($_SERVER['HTTP_RANGE'])) {
+            $range = $_SERVER['HTTP_RANGE'];
+            $range = str_replace('bytes=', '', $range);
+            list($range, $end) = explode('-', $range);
+            if (!empty($range)) {
+                fseek($fd, $range);
+            }
+        } else {
+            $range = 0;
+        }
+        if ($range) {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 206 Partial Content');
+        } else {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
+        }
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Last-Modified: ' . $ftime);
+        header('Accept-Ranges: bytes');
+        header('Content-Length: ' . ($fsize - $range));
+        if ($range) {
+            header("Content-Range: bytes $range-" . ($fsize - 1) . '/' . $fsize);
+        }
+        header('Content-Type: ' . $mimetype);
+        fpassthru($fd);
+        fclose($fd);
+        exit;
     }
 
 

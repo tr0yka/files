@@ -55,6 +55,15 @@ body{
     padding:5px;
 }
 
+#file_list tbody tr td a{
+    color: #585858;
+    text-decoration: none;
+}
+
+#file_list tbody tr td a:hover{
+    text-decoration: underline;
+}
+
 #file_list thead tr {
     background-color: #696969;
     color: #FFF;

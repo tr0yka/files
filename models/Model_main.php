@@ -22,6 +22,18 @@ class Model_main{
         return $list;
     }
 
+    public function getOneFileInfo($id){
+        $query = "SELECT * FROM files_info WHERE id={$id} LIMIT 1";
+        $res = mysql_query($query);
+        $f = mysql_fetch_array($res);
+        if(count($f)>0){
+            return $f;
+        }else{
+            return false;
+        }
+
+    }
+
     public function getFilter($filter)
     {
         if (!empty($filter)) {
