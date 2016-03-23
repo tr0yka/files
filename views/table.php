@@ -2,19 +2,23 @@
     <table id="file_list">
         <thead>
             <tr>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5</th>
+                <th>Название файла</th>
+                <th>Тип файла</th>
+                <th>Размер файла</th>
+                <th>Дата добавления</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
+
             <? foreach($data as $elem){?>
-            <td><?=$elem?></td>
+                <tr>
+                    <td><?=$elem['originalName']?></td>
+                    <td><?=$elem['fileType']?></td>
+                    <td><?=$elem['fileSize']?></td>
+                    <td><? $data = new Datetime($elem['added']); echo $data->format('d-m-Y H:i:s'); ?></td>
+                </tr>
             <?}?>
-            </tr>
+
         </tbody>
     </table>
 </div>
