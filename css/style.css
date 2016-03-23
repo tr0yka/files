@@ -1,0 +1,46 @@
+body{
+    margin: 0px;
+}
+
+#content{
+    width: 1000px;
+    margin: 0 auto;
+}
+
+#header{
+    padding: 20px 0px;
+    text-align: center;
+    font-size: 50px;
+    background: #2090ff;
+    color: #FFF;
+}
+
+#panel{
+    height: 30px;
+    margin-top: 5px;
+}
+
+#panel #filter{
+    float: left;
+}
+#panel #add{
+    float: right;
+}
+#add_btn{
+    padding: 2px 6px;
+    background: #064278;
+    color: #FFFFFF;
+    border-radius: 50%;
+}
+
+#table_container{
+    margin-top: 5px;
+}
+
+#file_list{
+    width: 100%;
+}
+
+#file_list tbody tr:nth-child(odd){
+    background: #d3d0d4;
+}
