@@ -1,8 +1,9 @@
 <? foreach($data as $elem): ?>
     <tr>
-        <td><?=$elem['originalName']?></td>
+        <td><a title="<? echo htmlspecialchars_decode($elem['comment']) ?>" href="/main/download/?file=<?=$elem['id']?>"><?=$elem['originalName']?></a></td>
         <td><?=$elem['fileType']?></td>
         <td><?=$elem['fileSize']?></td>
         <td><?=$elem['added']?></td>
+        <td><? echo substr(htmlspecialchars_decode($elem['description']), 0, 200);?></td>
     </tr>
 <? endforeach; ?>

@@ -13,38 +13,44 @@ class Controller_Main extends Controller{
     }
 
     public function action_upload(){
-        $data = [];
-        $upload_dir = $this->config['folder'];
-        $fileType = explode('.',$_FILES['userfile']['name']);
-        $fileType = $fileType[count($fileType)-1];
-        $date = new DateTime();
-        $date = $date->format('Y-m-d H:i:s');
-        $fileIndexName = $this->generateName();
-        $upload_file = $upload_dir.$fileIndexName;
-        if($this->checkFile($_FILES['userfile']['tmp_name'],$fileType,$this->config)){
-            if(move_uploaded_file($_FILES['userfile']['tmp_name'],$upload_file)){
-                $data['fileSize'] = filesize($upload_file);
-                $data['fileName'] = $fileIndexName;
-                $data['fileType'] = $fileType;
-                $data['originalName'] = $_FILES['userfile']['name'];
-                $data['added'] = $date;
-                if($this->model->insertFileData($data)){
-                    header('Location: http://'.$_SERVER['HTTP_HOST'].'/');
+        if(isset($_POST['submit'])){
+            $comment = htmlspecialchars($_POST['comment']);
+            $description = htmlspecialchars($_POST['description']);
+            $data = [];
+            $data['comment'] = strip_tags($comment);
+            $data['description'] = strip_tags($description);
+            $upload_dir = $this->config['folder'];
+            $fileType = explode('.',$_FILES['userfile']['name']);
+            $fileType = $fileType[count($fileType)-1];
+            $date = new DateTime();
+            $date = $date->format('Y-m-d H:i:s');
+            $fileIndexName = $this->generateName();
+            $upload_file = $upload_dir.$fileIndexName;
+            if($this->checkFile($_FILES['userfile']['tmp_name'],$fileType,$this->config)){
+                if(move_uploaded_file($_FILES['userfile']['tmp_name'],$upload_file)){
+                    $data['fileSize'] = filesize($upload_file);
+                    $data['fileName'] = $fileIndexName;
+                    $data['fileType'] = $fileType;
+                    $data['originalName'] = $_FILES['userfile']['name'];
+                    $data['added'] = $date;
+                    if($this->model->insertFileData($data)){
+                        header('Location: http://'.$_SERVER['HTTP_HOST'].'/');
+                    }else{
+                        unlink($upload_file);
+                        $this->view->generate('header.php',['title'=>'File uploads']);
+                        $this->view->generate('errors.php',['errors'=>['Произошла ошибка при загрузке файла']]);
+                        $this->view->generate('footer.php');
+                    }
                 }else{
-                    unlink($upload_file);
                     $this->view->generate('header.php',['title'=>'File uploads']);
                     $this->view->generate('errors.php',['errors'=>['Произошла ошибка при загрузке файла']]);
                     $this->view->generate('footer.php');
                 }
             }else{
                 $this->view->generate('header.php',['title'=>'File uploads']);
-                $this->view->generate('errors.php',['errors'=>['Произошла ошибка при загрузке файла']]);
+                $this->view->generate('errors.php',['errors'=>$this->errors]);
                 $this->view->generate('footer.php');
             }
-        }else{
-            $this->view->generate('header.php',['title'=>'File uploads']);
-            $this->view->generate('errors.php',['errors'=>$this->errors]);
-            $this->view->generate('footer.php');
         }
     }
 
