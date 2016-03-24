@@ -31,7 +31,7 @@ class Controller_Main extends Controller{
                     $data['fileSize'] = filesize($upload_file);
                     $data['fileName'] = $fileIndexName;
                     $data['fileType'] = $fileType;
-                    $data['originalName'] = $_FILES['userfile']['name'];
+                    $data['originalName'] = addslashes(htmlspecialchars($_FILES['userfile']['name']));  //str_replace("'", "`",  );
                     $data['added'] = $date;
                     if($this->model->insertFileData($data)){
                         header('Location: http://'.$_SERVER['HTTP_HOST'].'/');
@@ -117,14 +117,14 @@ class Controller_Main extends Controller{
                         return false;
                     }
                 }else{
-                    $this->errors[] = "Файл более чем {$this->config['max_size']}Б";
+                    $this->errors[] = "Файл более чем ".floor($this->config['max_size']/1024/1024)." Мб";
                     return false;
                 }
             }else{
                 if($config['max_size']>filesize($path)){
                     return true;
                 }else{
-                    $this->errors[] = "Файл более чем {$this->config['max_size']}Б";
+                    $this->errors[] = "Файл более чем ".floor($this->config['max_size']/1024/1024)." Мб";
                     return false;
                 }
             }

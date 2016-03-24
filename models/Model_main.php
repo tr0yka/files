@@ -2,7 +2,7 @@
 
 class Model_main{
 
-    private $host = '127.0.0.1';
+    private $host = '192.168.71.167';
     private $user = 'root';
     private $password = '';
     private $connection = null;
